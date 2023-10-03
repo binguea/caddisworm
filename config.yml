@@ -1,3 +1,5 @@
-baseURL:
+baseURL: https://binguea.github.io/caddiswork
 languageCode: en-us
 title: My New Hugo Site
+theme: "mainroad"
+

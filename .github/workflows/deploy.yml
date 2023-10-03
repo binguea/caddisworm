@@ -1,0 +1,40 @@
+name: Publish to GH Pages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # step 1, check out repository unter $GITHUB_WORKSPACE
+      - name: Checkout source
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      # step 2, setup hugo with latest version
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+
+      # step 3, clean and don't fail
+      - name: Clean public directory
+        run: rm -rf public
+
+      # step 4, build the site using the installed hugo,
+      # also specify the theme to use
+      - name: Build
+        run: hugo
+        # run: hugo --theme=fresh
+
+      # step 5, push our generated site to gh-pages branch
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+
